@@ -36,7 +36,7 @@ import {
 import DiscountModal from "../components/discountModal";
 import ExtraCategoriesBox from "../components/extraCategoriesBox";
 import ExtraItemsModal from "../components/extraItemsModal";
-import { FAILED, SUCCESS } from "../reducers/constant";
+import { FAILED, IDLE, SUCCESS } from "../reducers/constant";
 
 const Dish = ({ isEdit = false }) => {
   const {
@@ -275,6 +275,12 @@ const Dish = ({ isEdit = false }) => {
       dispatch(defaultDishStatus());
       dispatch(defaultUploadStatus());
       navigate("/dishes", { replace: true });
+    }
+    if (isEdit) {
+      if (dishStatus === SUCCESS && uploadStatus === IDLE) {
+        dispatch(defaultDishStatus());
+        navigate("/dishes", { replace: true });
+      }
     }
     setLoaderOpen(false);
   };
