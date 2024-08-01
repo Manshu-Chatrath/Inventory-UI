@@ -1,4 +1,4 @@
 import axios from "axios";
 export const apiSlice = axios.create({
-  baseURL: "http://localhost:4000/",
+  baseURL: "https://inventory-server-63c16fba55e4.herokuapp.com/",
 });
