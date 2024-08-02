@@ -13,11 +13,12 @@ This project is an inventory management system built using React, Vite, and othe
 
 ## Features
 
-- User authentication with email and password.
-- Inventory management for restaurant items.
-- Real-time updates on stock levels.
-- User-friendly UI with Material-UI components.
-- Responsive design for various screen sizes.
+- **User Authentication**: Secure login system with email and password.
+- **Inventory Management**: Track stock levels and receive alerts for low-stock items.
+- **Discount Management**: Set discounts on specific items or categories.
+- **Customizable Dishes**: Allow owner to provide options to customers so that they can customize their dishes.
+- **Real-Time Updates**: Automatically update stock levels and discounts in real-time.
+- **Responsive Design**: Adaptable UI for both desktop and mobile devices..
 
 ## Technologies Used
 
