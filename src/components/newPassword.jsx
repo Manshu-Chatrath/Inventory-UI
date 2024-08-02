@@ -69,6 +69,7 @@ const NewPassword = ({ errorMessage, status, email }) => {
         open={open}
       />
       <AuthForm
+        title={"New Password"}
         onSubmit={onSubmit}
         errorMessage={errorMessage}
         form={form}

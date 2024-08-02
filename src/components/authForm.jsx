@@ -9,6 +9,7 @@ const AuthForm = ({
   form,
   onSubmit,
   buttonTitle,
+  title,
   type = null,
   errors,
   loading,
@@ -124,23 +125,32 @@ const AuthForm = ({
               {buttonTitle}
             </Button>
           </Box>
-          {type ? (
-            <Box style={{ marginTop: 10 }}>
+          {type || title === "Forgot password" ? (
+            <Box style={{ marginTop: 10, textAlign: "center" }}>
               <Link
-                to={type === "login" ? "/signup" : "/login"}
+                to={
+                  type === "login" || title === "Forgot password"
+                    ? "/signup"
+                    : "/login"
+                }
                 style={{
                   fontFamily: "sans-serif",
                   textDecoration: "none",
-                  fontWeight: "400",
+                  fontWeight: "bold",
                 }}>
-                {type === "login" ? "New Supervisor?" : "Already have account?"}
-              </Link>{" "}
+                {title === "Forgot password"
+                  ? "New User?"
+                  : type === "login"
+                  ? "New User?"
+                  : "Already have account?"}
+              </Link>
+              <br />{" "}
               <Link
                 to={type === "login" ? "/forgotPassword" : null}
                 style={{
                   fontFamily: "sans-serif",
                   textDecoration: "none",
-                  fontWeight: "400",
+                  fontWeight: "bold",
                 }}>
                 {type === "login" ? "Forgot Password?" : null}
               </Link>

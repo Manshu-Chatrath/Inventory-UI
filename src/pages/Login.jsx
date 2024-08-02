@@ -68,6 +68,7 @@ const Login = () => {
         open={open}
       />
       <AuthForm
+        title={"Login"}
         onSubmit={onSubmit}
         errorMessage={errorMessage}
         form={form}

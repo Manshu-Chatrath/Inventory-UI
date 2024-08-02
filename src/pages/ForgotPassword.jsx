@@ -105,6 +105,7 @@ const ForgotPassword = () => {
             open={open}
           />
           <AuthForm
+            title={"Forgot password"}
             onSubmit={onSubmit}
             errorMessage={errorMessage}
             form={form}

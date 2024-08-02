@@ -70,6 +70,7 @@ const Otp = ({ email, page, status, errorMessage }) => {
         onClose={onClose}
       />
       <AuthForm
+        title={"OTP"}
         errorMessage={errorMessage}
         onSubmit={onSubmit}
         form={form}

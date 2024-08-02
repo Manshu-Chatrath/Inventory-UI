@@ -111,6 +111,7 @@ const Signup = () => {
             open={open}
           />
           <AuthForm
+            title={"Sign Up"}
             errorMessage={errorMessage}
             loading={loading}
             onSubmit={onSubmit}
