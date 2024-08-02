@@ -106,7 +106,7 @@ export default function Category() {
         setOpen={setOpen}
         selectedCategory={selectedItem}
       />
-      <Header route={"Categories"} />
+      <Header activeNav={"Categories"} />
       <Search placeholder={"Search any category"} handleChange={handleChange} />
       <TableComponent
         title={"Categories"}

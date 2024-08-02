@@ -4,9 +4,10 @@ import { Box, Typography, IconButton } from "@mui/material";
 import Drawer from "./drawer";
 import logo from "../assets/logo.png";
 import MenuIcon from "@mui/icons-material/Menu";
-const Header = () => {
+const Header = ({ activeNav }) => {
   const [open, setOpen] = useState(false);
   const handleDrawerOpen = () => setOpen(true);
+
   return (
     <Box
       style={{
@@ -48,7 +49,7 @@ const Header = () => {
               sx={{ mr: 2 }}>
               <MenuIcon />
             </IconButton>
-            <Drawer open={open} setOpen={setOpen} />
+            <Drawer activeNav={activeNav} open={open} setOpen={setOpen} />
           </Box>
         </Box>
       </Box>

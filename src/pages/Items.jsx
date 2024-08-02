@@ -90,7 +90,7 @@ export default function Items() {
         open={open}
         setOpen={setOpen}
       />
-      <Header route={"Items"} />
+      <Header activeNav={"Inventory"} />
       <Search placeholder={"Search any item"} handleChange={handleChange} />
       {itemListStatus === PENDING && list.length === 0 ? (
         <Box

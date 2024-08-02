@@ -17,7 +17,7 @@ import FastfoodIcon from "@mui/icons-material/Fastfood";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useDispatch } from "react-redux";
 import { List, ListItem } from "@mui/material";
-const RightSideDrawer = ({ open, setOpen, isActive }) => {
+const RightSideDrawer = ({ open, setOpen, activeNav }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isMobile = useMediaQuery("(max-width:450px)");
@@ -110,7 +110,7 @@ const RightSideDrawer = ({ open, setOpen, isActive }) => {
                 <Button
                   style={{
                     color: "black",
-                    fontWeight: isActive ? "bold" : "normal",
+                    fontWeight: activeNav === item?.name ? "bold" : "normal",
                   }}
                   startIcon={item.icon}
                   onClick={item.handleClick}>

@@ -314,7 +314,7 @@ const Dish = ({ isEdit = false }) => {
           loading={loading}
         />
       )}
-      <Header />
+      <Header activeNav={"Add Dish"} />
       {isEdit && selectedDishStatus === SUCCESS && !selectedDish ? (
         <Box
           style={{

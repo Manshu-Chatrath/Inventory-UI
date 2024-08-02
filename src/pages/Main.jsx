@@ -135,7 +135,7 @@ const Main = () => {
         overflowX: "hidden",
         overflowY: "auto",
       }}>
-      <Header route={"Menu"} />
+      <Header activeNav={"Menu"} />
       {categoryStatus === PENDING ? (
         <Loader />
       ) : categoryStatus === FAILED ? (
