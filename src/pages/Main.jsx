@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import Search from "../components/search";
@@ -6,7 +6,8 @@ import { getCategories } from "../reducers/categoriesSlice";
 import Header from "../components/header";
 import { getDishes, defaultDishListStatus } from "../reducers/dishSlice";
 import HorizontalScroll from "../components/horizontalScroll";
-import { useInViewport } from "react-in-viewport";
+import VisibilitySensor from "react-visibility-sensor";
+
 import FoodItemCard from "../components/foodItemCard";
 import { capitalizeFirstLetter } from "../util";
 import { FAILED, PENDING, SUCCESS } from "../reducers/constant";
@@ -16,11 +17,10 @@ const Main = () => {
   const categoryStatus = useSelector(
     (state) => state.categories.categoriesListStatus
   );
-  const myRef = useRef();
-  const { inViewport } = useInViewport(myRef);
+
   const dishes = useSelector((state) => state.dishes.dishesList);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [fetchMore, setFetchMore] = useState(false);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [dishList, setDishList] = useState([]);
   const navigate = useNavigate();
@@ -73,8 +73,8 @@ const Main = () => {
     );
   };
 
-  useEffect(() => {
-    if (fetchMore && dishList.length > 0) {
+  const onChange = (visible) => {
+    if (visible) {
       let newPage = page + 1;
       dispatch(
         getDishes({
@@ -86,20 +86,7 @@ const Main = () => {
       );
       setPage(newPage);
     }
-  }, [fetchMore, totalDishes]);
-
-  useEffect(() => {
-    if (fetchMore) {
-      if (!inViewport) {
-        setFetchMore(false);
-      }
-    }
-    if (!fetchMore) {
-      if (inViewport) {
-        setFetchMore(true);
-      }
-    }
-  }, [inViewport, fetchMore]);
+  };
 
   const Loader = () => {
     return (
@@ -222,10 +209,14 @@ const Main = () => {
                 <FoodItemCard handleEdit={handleEdit} dish={dish} />
               </Grid>
             ))}
-            {dishList?.length < totalDishes && (
-              <section ref={myRef}>
-                <Loader />
-              </section>
+            {dishList.length < totalDishes && dishList.length > 9 && (
+              <Box style={{ display: "flex", justifyContent: "center" }}>
+                <div>
+                  <VisibilitySensor onChange={onChange}>
+                    <CircularProgress style={{ color: "black" }} size={25} />
+                  </VisibilitySensor>
+                </div>
+              </Box>
             )}
           </Grid>
         </>
