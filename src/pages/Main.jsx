@@ -224,7 +224,7 @@ const Main = () => {
             ))}
             {dishList?.length < totalDishes && (
               <section ref={myRef}>
-                {dishList.length > 8 ? <Loader /> : null}
+                <Loader />
               </section>
             )}
           </Grid>
