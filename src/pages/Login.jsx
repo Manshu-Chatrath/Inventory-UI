@@ -15,6 +15,7 @@ const Login = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
   const form = {
@@ -36,6 +37,8 @@ const Login = () => {
   const errorMessage = useSelector((state) => state.auth.loginStatusError);
   const status = useSelector((state) => state.auth.loginStatus);
   useEffect(() => {
+    setValue("email", "test@test.com");
+    setValue("password", "123456");
     if (status === FAILED || status === SUCCESS) {
       setLoading(false);
     }

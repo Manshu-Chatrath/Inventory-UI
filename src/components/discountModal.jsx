@@ -97,11 +97,15 @@ export default function DiscountModal({
     const hours = timeObject.getHours();
     const minutes = timeObject.getMinutes();
     const date = dateObject.getDate();
-    const month = dateObject.getMonth() + 1;
+    const month = dateObject.getMonth();
     const year = dateObject.getFullYear();
-    let selectedMoment = moment
-      .tz(`${year}-${month}-${date} ${hours}:${minutes}`, "YYYY-MM-DD HH:mm")
-      .valueOf();
+    let selectedMoment = moment({
+      year: year,
+      month: month,
+      date: date,
+      hours: hours,
+      minutes: minutes,
+    }).valueOf();
 
     return selectedMoment;
   }
@@ -121,33 +125,40 @@ export default function DiscountModal({
       errorExists = true;
       setTimeErrorMessage("Please select a timezone!");
     }
-    if (
-      selectedStartDate === selectedEndDate &&
-      selectedStartTime > selectedEndTime
-    ) {
+
+    const startDiscountTime = convertToMilliseconds(
+      selectedStartTime,
+      selectedStartDate
+    );
+    const endDiscountTime = convertToMilliseconds(
+      selectedEndTime,
+      selectedEndDate
+    );
+    if (moment().valueOf() > startDiscountTime) {
+      setTimeErrorMessage("Start time must be after current time!");
+      errorExists = true;
+    }
+    if (startDiscountTime > endDiscountTime) {
       setTimeErrorMessage("End time must be after start time!");
       errorExists = true;
     }
-
-    if (errorExists) return;
-    else {
-      setDiscountDetails({
-        startDiscountDate: selectedStartDate,
-        endDiscountDate: selectedEndDate,
-        startDiscountTime: convertToMilliseconds(
-          selectedStartTime,
-          selectedStartDate
-        ),
-        endDiscountTime: convertToMilliseconds(
-          selectedEndTime,
-          selectedEndDate
-        ),
-        discountPercentage: data.percentage,
-        timeZone: timeZone,
-        discount: discount,
-      });
-      handleClose();
+    if (errorExists) {
+      return;
+    } else {
+      setTimeErrorMessage("");
+      setDateErrorMessage("");
     }
+
+    setDiscountDetails({
+      startDiscountDate: selectedStartDate,
+      endDiscountDate: selectedEndDate,
+      startDiscountTime: startDiscountTime,
+      endDiscountTime: endDiscountTime,
+      discountPercentage: data.percentage,
+      timeZone: timeZone,
+      discount: discount,
+    });
+    handleClose();
   };
 
   useEffect(() => {
@@ -161,6 +172,7 @@ export default function DiscountModal({
       setTimeZone(selectedDish.timeZone);
     }
   }, [selectedDish]);
+
   return (
     <>
       <Modal
@@ -380,8 +392,7 @@ export default function DiscountModal({
                 </Box>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <TimePicker
-                    error={isSubmit && !selectedStartTime ? true : false}
-                    helperText={timeErrorMessage}
+                    error={true}
                     value={dayjs(selectedStartTime)}
                     sx={{
                       margin: "auto",
@@ -486,20 +497,17 @@ export default function DiscountModal({
                 </LocalizationProvider>
               </Box>
             </Box>
-            {isSubmit &&
-              (selectedStartTime > selectedEndTime ||
-                !selectedStartTime ||
-                !selectedEndTime) && (
-                <label
-                  style={{
-                    fontWeight: "bold",
-                    color: "#d32f2f",
-                    fontSize: 14,
-                    marginLeft: "14px",
-                  }}>
-                  {timeErrorMessage}
-                </label>
-              )}
+            {isSubmit && timeErrorMessage && (
+              <label
+                style={{
+                  fontWeight: "bold",
+                  color: "#d32f2f",
+                  fontSize: 14,
+                  marginLeft: "14px",
+                }}>
+                {timeErrorMessage}
+              </label>
+            )}
             <Box>
               <Button
                 onClick={handleSubmit(onSubmit)}
