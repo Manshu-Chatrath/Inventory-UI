@@ -97,17 +97,16 @@ export default function DiscountModal({
     const hours = timeObject.getHours();
     const minutes = timeObject.getMinutes();
     const date = dateObject.getDate();
-    const month = dateObject.getMonth();
+    const month = dateObject.getMonth() + 1;
     const year = dateObject.getFullYear();
-    let selectedMoment = moment({
-      year: year,
-      month: month,
-      date: date,
-      hours: hours,
-      minutes: minutes,
-    }).valueOf();
 
-    return selectedMoment;
+    const selectedMoment = moment.tz(
+      `${year}-${month}-${date} ${hours}:${minutes}`,
+      "YYYY-MM-DD HH:mm",
+      timeZone
+    );
+    const utcMoment = selectedMoment.clone().utc();
+    return utcMoment.valueOf();
   }
 
   const onSubmit = (data) => {
@@ -134,10 +133,7 @@ export default function DiscountModal({
       selectedEndTime,
       selectedEndDate
     );
-    if (moment().valueOf() > startDiscountTime) {
-      setTimeErrorMessage("Start time must be after current time!");
-      errorExists = true;
-    }
+
     if (startDiscountTime > endDiscountTime) {
       setTimeErrorMessage("End time must be after start time!");
       errorExists = true;

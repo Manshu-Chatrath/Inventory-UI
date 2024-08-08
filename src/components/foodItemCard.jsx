@@ -3,6 +3,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
+import moment from "moment-timezone";
 import { Button, CardActionArea, Box } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit"; // Importing the Edit icon
 const FoodItemCard = ({ dish, handleEdit }) => {
@@ -10,6 +11,7 @@ const FoodItemCard = ({ dish, handleEdit }) => {
   const calculateDiscount = () => {
     return dish.price - (dish.price * dish.discount) / 100;
   };
+
   return (
     <Card
       onMouseEnter={() => setHover(true)} // Set hover state to true when mouse enters
@@ -42,17 +44,23 @@ const FoodItemCard = ({ dish, handleEdit }) => {
                   fontWeight: "bold",
                   fontSize: "16px",
                 }}>
-                <span>{"$" + calculateDiscount()}</span>
-                {dish?.discount ? (
-                  <span
-                    style={{
-                      marginLeft: "10px",
-                      color: "red",
-                      textDecoration: "line-through",
-                    }}>
-                    {"$" + dish.price}
-                  </span>
-                ) : null}
+                {moment.utc().valueOf() >= dish?.discountStartTime &&
+                moment.utc().valueOf() < dish?.discountEndTime &&
+                dish?.discount ? (
+                  <>
+                    <span>{"$" + calculateDiscount()}</span>
+                    <span
+                      style={{
+                        marginLeft: "10px",
+                        color: "red",
+                        textDecoration: "line-through",
+                      }}>
+                      {"$" + dish.price}
+                    </span>
+                  </>
+                ) : (
+                  "$" + dish.price
+                )}
               </Typography>
             </Box>
           </Box>
