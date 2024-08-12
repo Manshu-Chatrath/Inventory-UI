@@ -15,6 +15,7 @@ import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu"; // A good c
 import ClassIcon from "@mui/icons-material/Class"; // For "categories"
 import FastfoodIcon from "@mui/icons-material/Fastfood";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { apiSlice } from "../reducers/apiSlice/apiSlice";
 import { useDispatch } from "react-redux";
 import { List, ListItem } from "@mui/material";
 const RightSideDrawer = ({ open, setOpen, activeNav }) => {
@@ -45,9 +46,10 @@ const RightSideDrawer = ({ open, setOpen, activeNav }) => {
 
     {
       name: "Logout",
-      handleClick: () => {
+      handleClick: async () => {
         dispatch(userLogOut());
         navigate("/login", { replace: true });
+        await apiSlice.post("/logout");
       },
       icon: <LogoutIcon />,
     },
