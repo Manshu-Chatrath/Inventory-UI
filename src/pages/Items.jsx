@@ -92,7 +92,7 @@ export default function Items() {
       />
       <Header activeNav={"Inventory"} />
       <Search placeholder={"Search any item"} handleChange={handleChange} />
-      {itemListStatus === PENDING && list.length === 0 ? (
+      {itemListStatus === PENDING ? (
         <Box
           style={{
             display: "flex",

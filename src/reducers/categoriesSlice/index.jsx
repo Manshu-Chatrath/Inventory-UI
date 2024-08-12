@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { apiSlice } from "../apiSlice/apiSlice";
 import { SUCCESS, FAILED, PENDING, IDLE } from "../constant";
-
+import { invalidToken } from "../../util";
 export const createCategory = createAsyncThunk(
   "categories",
   async (data, { rejectWithValue }) => {
@@ -12,7 +12,10 @@ export const createCategory = createAsyncThunk(
       if (!err.response) {
         throw err;
       }
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        ...err.response.data,
+        statusCode: err.response.status,
+      });
     }
   }
 );
@@ -27,7 +30,10 @@ export const editCategory = createAsyncThunk(
       if (!err.response) {
         throw err;
       }
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        ...err.response.data,
+        statusCode: err.response.status,
+      });
     }
   }
 );
@@ -42,7 +48,10 @@ export const deleteCategory = createAsyncThunk(
       if (!err.response) {
         throw err;
       }
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        ...err.response.data,
+        statusCode: err.response.status,
+      });
     }
   }
 );
@@ -56,7 +65,10 @@ export const getCategories = createAsyncThunk(
       if (!err.response) {
         throw err;
       }
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        ...err.response.data,
+        statusCode: err.response.status,
+      });
     }
   }
 );
@@ -87,6 +99,8 @@ const categorySlice = createSlice({
       state.categoryStatusError = payload?.error
         ? payload.error
         : payload?.message;
+
+      invalidToken(payload?.statusCode);
     });
     builder.addCase(createCategory.fulfilled, (state) => {
       state.categoryStatus = SUCCESS;
@@ -100,6 +114,7 @@ const categorySlice = createSlice({
       state.categoryStatusError = payload?.error
         ? payload.error
         : payload?.message;
+      invalidToken(payload?.statusCode);
     });
     builder.addCase(editCategory.fulfilled, (state) => {
       state.categoryStatus = SUCCESS;
@@ -114,6 +129,7 @@ const categorySlice = createSlice({
       state.categoryStatusError = payload?.error
         ? payload.error
         : payload?.message;
+      invalidToken(payload?.statusCode);
     });
     builder.addCase(deleteCategory.fulfilled, (state) => {
       state.categoryStatus = SUCCESS;

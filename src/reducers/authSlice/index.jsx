@@ -12,7 +12,10 @@ export const initiateSignUp = createAsyncThunk(
       if (!err.response) {
         throw err;
       }
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        ...err.response.data,
+        statusCode: err.response.status,
+      });
     }
   }
 );
@@ -27,7 +30,10 @@ export const finalSignUp = createAsyncThunk(
       if (!err.response) {
         throw err;
       }
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        ...err.response.data,
+        statusCode: err.response.status,
+      });
     }
   }
 );
@@ -52,7 +58,10 @@ export const login = createAsyncThunk(
       if (!err.response) {
         throw err;
       }
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        ...err.response.data,
+        statusCode: err.response.status,
+      });
     }
   }
 );
@@ -67,7 +76,10 @@ export const forgotPassword = createAsyncThunk(
       if (!err.response) {
         throw err;
       }
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        ...err.response.data,
+        statusCode: err.response.status,
+      });
     }
   }
 );
@@ -81,7 +93,10 @@ export const newPassword = createAsyncThunk(
       if (!err.response) {
         throw err;
       }
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        ...err.response.data,
+        statusCode: err.response.status,
+      });
     }
   }
 );
@@ -96,7 +111,10 @@ export const verifyOtp = createAsyncThunk(
       if (!err.response) {
         throw err;
       }
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        ...err.response.data,
+        statusCode: err.response.status,
+      });
     }
   }
 );

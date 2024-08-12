@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { apiSlice } from "../apiSlice/apiSlice";
 import axios from "axios";
 import { SUCCESS, FAILED, PENDING, IDLE } from "../constant";
-
+import { invalidToken } from "../../util";
 export const createDish = createAsyncThunk(
   "createDish",
   async (data, { rejectWithValue }) => {
@@ -13,7 +13,10 @@ export const createDish = createAsyncThunk(
       if (!err.response) {
         throw err;
       }
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        ...err.response.data,
+        statusCode: err.response.status,
+      });
     }
   }
 );
@@ -28,7 +31,10 @@ export const editDish = createAsyncThunk(
       if (!err.response) {
         throw err;
       }
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        ...err.response.data,
+        statusCode: err.response.status,
+      });
     }
   }
 );
@@ -54,7 +60,10 @@ export const imageUpload = createAsyncThunk(
       if (!err.response) {
         throw err;
       }
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        ...err.response.data,
+        statusCode: err.response.status,
+      });
     }
   }
 );
@@ -71,7 +80,10 @@ export const getDishes = createAsyncThunk(
       if (!err.response) {
         throw err;
       }
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        ...err.response.data,
+        statusCode: err.response.status,
+      });
     }
   }
 );
@@ -86,7 +98,10 @@ export const getDish = createAsyncThunk(
       if (!err.response) {
         throw err;
       }
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        ...err.response.data,
+        statusCode: err.response.status,
+      });
     }
   }
 );
@@ -101,7 +116,10 @@ export const deleteDish = createAsyncThunk(
       if (!err.response) {
         throw err;
       }
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        ...err.response.data,
+        statusCode: err.response.status,
+      });
     }
   }
 );
@@ -152,6 +170,7 @@ const dishesSlice = createSlice({
       state.dishesStatusError = payload?.error
         ? payload.error
         : payload?.message;
+      invalidToken(payload?.statusCode);
     });
     builder.addCase(createDish.fulfilled, (state, action) => {
       state.dishesStatus = SUCCESS;
@@ -166,6 +185,7 @@ const dishesSlice = createSlice({
       state.dishesStatusError = payload?.error
         ? payload.error
         : payload?.message;
+      invalidToken(payload?.statusCode);
     });
     builder.addCase(editDish.fulfilled, (state, action) => {
       state.dishesStatus = SUCCESS;
@@ -180,6 +200,7 @@ const dishesSlice = createSlice({
       state.dishesStatusError = payload?.error
         ? payload.error
         : payload?.message;
+      invalidToken(payload?.statusCode);
     });
     builder.addCase(deleteDish.fulfilled, (state, action) => {
       state.dishesStatus = SUCCESS;

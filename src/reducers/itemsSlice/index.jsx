@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { apiSlice } from "../apiSlice/apiSlice";
 import { SUCCESS, FAILED, PENDING, IDLE } from "../constant";
-
+import { invalidToken } from "../../util";
 export const createItem = createAsyncThunk(
   "item",
   async (data, { rejectWithValue }) => {
@@ -12,7 +12,10 @@ export const createItem = createAsyncThunk(
       if (!err.response) {
         throw err;
       }
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        ...err.response.data,
+        statusCode: err.response.status,
+      });
     }
   }
 );
@@ -29,7 +32,11 @@ export const getItems = createAsyncThunk(
       if (!err.response) {
         throw err;
       }
-      return rejectWithValue(err.response.data);
+
+      return rejectWithValue({
+        ...err.response.data,
+        statusCode: err.response.status,
+      });
     }
   }
 );
@@ -44,7 +51,10 @@ export const editItem = createAsyncThunk(
       if (!err.response) {
         throw err;
       }
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        ...err.response.data,
+        statusCode: err.response.status,
+      });
     }
   }
 );
@@ -59,7 +69,10 @@ export const deleteItem = createAsyncThunk(
       if (!err.response) {
         throw err;
       }
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        ...err.response.data,
+        statusCode: err.response.status,
+      });
     }
   }
 );
@@ -93,6 +106,7 @@ const itemsSlice = createSlice({
       const { payload } = action;
       state.itemStatus = FAILED;
       state.itemStatusError = payload?.error ? payload.error : payload?.message;
+      invalidToken(payload?.code);
     });
     builder.addCase(createItem.fulfilled, (state) => {
       state.itemStatus = SUCCESS;
@@ -104,6 +118,7 @@ const itemsSlice = createSlice({
       const { payload } = action;
       state.itemStatus = FAILED;
       state.itemStatusError = payload?.error ? payload.error : payload?.message;
+      invalidToken(payload?.code);
     });
     builder.addCase(deleteItem.fulfilled, (state) => {
       state.itemStatus = SUCCESS;
@@ -115,6 +130,7 @@ const itemsSlice = createSlice({
       const { payload } = action;
       state.itemStatus = FAILED;
       state.itemStatusError = payload?.error ? payload.error : payload?.message;
+      invalidToken(payload?.code);
     });
     builder.addCase(editItem.fulfilled, (state) => {
       state.itemStatus = SUCCESS;
@@ -122,8 +138,11 @@ const itemsSlice = createSlice({
     builder.addCase(getItems.pending, (state) => {
       state.itemListStatus = PENDING;
     });
-    builder.addCase(getItems.rejected, (state) => {
+    builder.addCase(getItems.rejected, (state, action) => {
+      const { payload } = action;
       state.itemListStatus = FAILED;
+      console.log(payload);
+      invalidToken(payload?.statusCode);
     });
     builder.addCase(getItems.fulfilled, (state, action) => {
       state.itemListStatus = SUCCESS;
