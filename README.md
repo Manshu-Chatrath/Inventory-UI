@@ -11,7 +11,7 @@ This project is an inventory management system built using React, Vite, and othe
 
 - **Demo Video**: [Watch the demo](https://youtu.be/w6ui_CWd37s)
 - **Live Application**: [Visit the live site](https://your-restaurant-inventory-0e6c20d5900a.herokuapp.com/)
-
+- **Live Restaurant**: https://restaurant0-6abeb1fba7c0.herokuapp.com/
 
 ## Features
 
